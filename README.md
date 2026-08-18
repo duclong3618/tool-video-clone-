@@ -4,61 +4,61 @@ Year: 2026
 Project: VideoDubAI
 -->
 
-# 🎬 VideoDubAI — Chinese → Vietnamese Video Dubbing
+# 🎬 VideoDubAI — Dịch & Lồng tiếng video Trung Quốc → Tiếng Việt
 
-AI-powered web application that automatically translates Chinese videos into Vietnamese with dubbed audio, preserving background music and sound effects.
+Nền tảng web AI tự động chuyển đổi và lồng tiếng video từ tiếng Trung sang tiếng Việt, giữ nguyên nhạc nền và âm thanh gốc.
 
-## ✨ Features
+## ✨ Tính năng
 
-- **Upload & Process**: Upload Chinese videos and get Vietnamese dubbed output
-- **WhisperX Transcription**: Industry-leading speech recognition with word-level timestamps
-- **Intelligent Translation**: LLM-powered Chinese → Vietnamese translation with context awareness
-- **Multi-Voice TTS**: Vietnamese text-to-speech with multiple voice options
-- **Background Preservation**: Keeps original music and sound effects
-- **Subtitle Generation**: SRT and ASS subtitle files with bilingual support
-- **Speaker Diarization**: Optional speaker detection for multi-speaker videos
-- **Real-time Progress**: WebSocket-powered live progress updates
-- **Subtitle Editor**: Edit translations and regenerate individual segments
-- **GPU Support**: Automatic CUDA detection with CPU fallback
+- **Upload & Xử lý**: Upload video tiếng Trung → nhận video lồng tiếng tiếng Việt
+- **WhisperX**: Nhận diện giọng nói chính xác đến từng từ
+- **Dịch thông minh**: LLM dịch Trung → Việt tự nhiên, giữ ngữ cảnh
+- **Nhiều giọng TTS**: TTS tiếng Việt với nhiều giọng lựa chọn
+- **Giữ nhạc nền**: Giữ nguyên nhạc và hiệu ứng âm thanh gốc
+- **Tạo phụ đề**: File SRT và ASS với hỗ trợ song ngữ
+- **Phân biệt người nói**: Tùy chọn phát hiện nhiều người nói
+- **Tiến độ real-time**: WebSocket cập nhật tiến độ trực tiếp
+- **Sửa phụ đề**: Chỉnh sửa bản dịch và tạo lại giọng từng đoạn
+- **Hỗ trợ GPU**: Tự động detect CUDA, fallback CPU
 
-## 🏗️ Architecture
+## 🏗️ Kiến trúc
 
 ```
-frontend/          Next.js + TypeScript + TailwindCSS + shadcn/ui
-├── app/           Pages: Upload, Job Progress, Subtitle Editor
-├── components/    Reusable UI components
-├── lib/           Utilities and API client
-└── hooks/         Custom React hooks
+frontend/          Next.js + TypeScript + TailwindCSS
+├── app/           Trang: Upload, Tiến độ, Sửa phụ đề
+├── components/    UI components
+├── lib/           Utilities
+└── hooks/         React hooks
 
 backend/           Python FastAPI
 ├── api/           REST endpoints + WebSocket
-├── services/      Core business logic
+├── services/      Logic xử lý chính
 │   ├── video.py           Pipeline orchestrator
-│   ├── ffmpeg.py          Video/audio processing
+│   ├── ffmpeg.py          Xử lý video/audio
 │   ├── transcription.py   WhisperX wrapper
-│   ├── translation.py     Chinese→Vietnamese translation
-│   ├── tts.py             Text-to-speech providers
-│   ├── audio_mixer.py     Audio mixing
-│   ├── subtitles.py       SRT/ASS generation
-│   └── lipsync.py         Lip-sync (optional)
+│   ├── translation.py     Dịch Trung → Việt
+│   ├── tts.py             Text-to-speech
+│   ├── audio_mixer.py     Trộn audio
+│   ├── subtitles.py       Tạo SRT/ASS
+│   └── lipsync.py         Lip-sync (tùy chọn)
 ├── workers/       Celery background tasks
-├── models/        SQLAlchemy database models
+├── models/        SQLAlchemy models
 └── utils/         Helpers
 
-docker/            Dockerfiles and compose
-storage/           Temporary processing files
+docker/            Dockerfiles và compose
+storage/           Files tạm thời
 ```
 
-## 🚀 Quick Start
+## 🚀 Bắt đầu nhanh
 
-### Option 1: Docker (Recommended)
+### Cách 1: Docker (Khuyến nghị)
 
 ```bash
-# Clone and configure
+# Clone và cấu hình
 cp .env.example .env
-# Edit .env with your API keys
+# Chỉnh .env với API key của bạn
 
-# Start all services
+# Khởi chạy tất cả services
 cd docker
 docker-compose up -d
 
@@ -67,123 +67,113 @@ docker-compose up -d
 # API Docs: http://localhost:8000/docs
 ```
 
-### Option 2: Manual Setup
-
-#### Backend
+### Cách 2: Cài thủ công
 
 ```bash
-# Create virtual environment
+# Tạo virtual environment
 python -m venv venv
-source venv/bin/activate  # or venv\Scripts\activate on Windows
+source venv/bin/activate  # hoặc venv\Scripts\activate trên Windows
 
-# Install dependencies
+# Cài dependencies
 pip install -r requirements.txt
 
-# Install WhisperX (optional, for best transcription)
-pip install git+https://github.com/m-bain/whisperx.git
-
-# Install Demucs (optional, for vocal separation)
-pip install demucs
-
-# Copy and configure environment
+# Copy và cấu hình
 cp .env.example .env
-# Edit .env with your settings
+# Chỉnh .env với cài đặt của bạn
 
-# Start the server
+# Chạy backend
 uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
-```
 
-#### Frontend
-
-```bash
+# Terminal mới — chạy frontend
 cd frontend
 npm install
 npm run dev
 ```
 
-### Option 3: Start Services
+### Cách 3: Script 1 lệnh
 
 ```bash
-# Start PostgreSQL and Redis (if not using Docker)
-# ...
+# Windows
+run.bat
 
-# Backend
-uvicorn backend.main:app --host 0.0.0.0 --port 8000
-
-# Celery Worker (for background processing)
-celery -A backend.workers.celery_app worker -l info -c 1
-
-# Frontend
-cd frontend && npm run dev
+# Mac/Linux
+./run.sh
 ```
 
-## 🔧 Configuration
+## 🔧 Cấu hình
 
-### Required Environment Variables
+### Biến môi trường bắt buộc
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `DATABASE_URL` | PostgreSQL connection string | `postgresql+asyncpg://postgres:postgres@localhost:5432/videodub` |
-| `REDIS_URL` | Redis connection string | `redis://localhost:6379/0` |
-| `OPENAI_API_KEY` | OpenAI API key (for translation) | - |
-| `TTS_PROVIDER` | TTS engine: `edge`, `elevenlabs`, `qwen3tts` | `edge` |
+| Biến | Mô tả | Mặc định |
+|------|--------|----------|
+| `DATABASE_URL` | PostgreSQL connection | `sqlite+aiosqlite:///./videodub.db` |
+| `REDIS_URL` | Redis connection | `redis://localhost:6379/0` |
+| `OPENAI_API_KEY` | OpenAI API key (dịch) | - |
+| `TTS_PROVIDER` | Engine TTS: `edge`, `elevenlabs`, `qwen3tts` | `edge` |
 
-### Optional Configuration
+### Cấu hình tùy chọn
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `WHISPER_MODEL` | Whisper model size | `large-v3` |
-| `WHISPER_DEVICE` | Compute device: `auto`, `cuda`, `cpu` | `auto` |
-| `TRANSLATION_PROVIDER` | Translation backend: `openai`, `ollama` | `openai` |
-| `OLLAMA_MODEL` | Ollama model name | `qwen3:8b` |
-| `PYANNOTE_AUTH_TOKEN` | HuggingFace token for diarization | - |
-| `MAX_UPLOAD_SIZE_MB` | Maximum upload file size | `500` |
+| Biến | Mô tả | Mặc định |
+|------|--------|----------|
+| `WHISPER_MODEL` | Model Whisper | `large-v3` |
+| `WHISPER_DEVICE` | Thiết bị: `auto`, `cuda`, `cpu` | `auto` |
+| `TRANSLATION_PROVIDER` | Backend dịch: `openai`, `ollama` | `openai` |
+| `OLLAMA_MODEL` | Model Ollama | `qwen3:8b` |
+| `PYANNOTE_AUTH_TOKEN` | HuggingFace token | - |
+| `MAX_UPLOAD_SIZE_MB` | Kích thước upload tối đa | `500` |
 
-### TTS Providers
+### So sánh TTS Providers
 
-| Provider | Cost | Quality | Voice Cloning |
-|----------|------|---------|---------------|
-| **Edge TTS** | Free | Good | No |
-| **ElevenLabs** | Paid | Excellent | Yes |
-| **Qwen3-TTS** | Self-hosted | Good | Limited |
+| Provider | Chi phí | Chất lượng | Voice Cloning |
+|----------|---------|------------|---------------|
+| **Edge TTS** | Miễn phí | Tốt | Không |
+| **ElevenLabs** | Trả phí | Xuất sắc | Có |
+| **Qwen3-TTS** | Self-hosted | Tốt | Giới hạn |
 
-### Translation Providers
+### So sánh Translation Providers
 
-| Provider | Cost | Notes |
-|----------|------|-------|
-| **OpenAI** | Paid | Best quality, GPT-4o recommended |
-| **Ollama** | Free (local) | Requires GPU, Qwen3-8B recommended |
+| Provider | Chi phí | Ghi chú |
+|----------|---------|---------|
+| **OpenAI** | Trả phí | Chất lượng tốt nhất, GPT-4o |
+| **Ollama** | Miễn phí (local) | Cần GPU, Qwen3-8B |
 
 ## 📡 API Reference
 
-### Endpoints
+### Danh sách endpoints
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `POST` | `/api/videos/upload` | Upload video file |
-| `POST` | `/api/jobs` | Create dubbing job |
-| `GET` | `/api/jobs/{job_id}` | Get job status |
-| `GET` | `/api/videos/{video_id}` | Get video details |
-| `GET` | `/api/videos/{video_id}/subtitles` | Get subtitles |
-| `PUT` | `/api/videos/{video_id}/subtitles` | Update subtitles |
-| `POST` | `/api/videos/{video_id}/segments/{segment_id}/regenerate` | Regenerate TTS |
-| `GET` | `/api/videos/{video_id}/download` | Download dubbed video |
-| `WS` | `/api/jobs/{job_id}/progress` | Real-time progress |
+| Method | Endpoint | Mô tả |
+|--------|----------|-------|
+| `POST` | `/api/videos/upload` | Upload video |
+| `POST` | `/api/jobs` | Tạo job lồng tiếng |
+| `GET` | `/api/jobs/{job_id}` | Xem trạng thái job |
+| `GET` | `/api/videos/{video_id}` | Xem thông tin video |
+| `GET` | `/api/videos/{video_id}/subtitles` | Xem phụ đề |
+| `PUT` | `/api/videos/{video_id}/subtitles` | Cập nhật phụ đề |
+| `POST` | `/api/videos/{video_id}/segments/{segment_id}/regenerate` | Tạo lại giọng |
+| `GET` | `/api/videos/{video_id}/download` | Tải video kết quả |
+| `GET` | `/api/tts/voices` | Danh sách giọng TTS |
+| `POST` | `/api/tts/preview` | Nghe mẫu giọng |
+| `GET` | `/api/languages` | Danh sách ngôn ngữ |
+| `POST` | `/api/jobs/batch` | Tạo nhiều job |
+| `POST` | `/api/jobs/{job_id}/retry` | Retry job thất bại |
+| `POST` | `/api/auth/register` | Đăng ký |
+| `POST` | `/api/auth/login` | Đăng nhập |
+| `GET` | `/api/auth/me` | Thông tin user |
+| `GET` | `/api/analytics/summary` | Thống kê |
+| `WS` | `/api/jobs/{job_id}/progress` | Tiến độ real-time |
 
-### Example: Upload & Process
+### Ví dụ: Upload & Xử lý
 
 ```bash
 # 1. Upload video
 curl -X POST http://localhost:8000/api/videos/upload \
-  -F "file=@chinese_video.mp4"
+  -F "file=@video_trung.wav"
 
-# Response: {"video_id": "abc-123", "filename": "chinese_video.mp4"}
-
-# 2. Create job
+# 2. Tạo job
 curl -X POST http://localhost:8000/api/jobs \
   -H "Content-Type: application/json" \
   -d '{
-    "video_id": "abc-123",
+    "video_id": "ID_TỪ_BƯỚC_1",
     "source_language": "zh",
     "target_language": "vi",
     "tts_provider": "edge",
@@ -191,55 +181,50 @@ curl -X POST http://localhost:8000/api/jobs \
     "preserve_background": true
   }'
 
-# Response: {"job_id": "def-456", "status": "queued"}
-
-# 3. Monitor progress via WebSocket
-wscat -c ws://localhost:8000/api/jobs/def-456/progress
-
-# 4. Download when complete
-curl -O http://localhost:8000/api/videos/abc-123/download
+# 3. Tải video kết quả
+curl -O http://localhost:8000/api/videos/VIDEO_ID/download
 ```
 
-## 🎯 Processing Pipeline
+## 🎯 Pipeline xử lý
 
 ```
-Chinese MP4
+Video tiếng Trung
     │
-    ├─→ FFmpeg: Extract audio (16kHz mono WAV)
+    ├─→ FFmpeg: Trích xuất audio (16kHz mono WAV)
     │
-    ├─→ Demucs: Separate vocals from background (optional)
+    ├─→ Demucs: Tách giọng khỏi nhạc nền (tùy chọn)
     │
-    ├─→ WhisperX: Transcribe Chinese speech
-    │   └─→ Word-level timestamps + sentence segmentation
+    ├─→ WhisperX: Nhận diện lời thoại tiếng Trung
+    │   └─→ Timestamp từng từ + phân câu
     │
-    ├─→ pyannote: Speaker diarization (optional)
+    ├─→ pyannote: Phân biệt người nói (tùy chọn)
     │
-    ├─→ LLM: Translate Chinese → Vietnamese
-    │   └─→ Context-aware, natural Vietnamese output
+    ├─→ LLM: Dịch Trung → Việt
+    │   └─→ Dịch tự nhiên, giữ ngữ cảnh
     │
-    ├─→ TTS: Generate Vietnamese voices
-    │   └─→ Speed adjustment to match original timing
+    ├─→ TTS: Tạo giọng tiếng Việt
+    │   └─→ Điều chỉnh tốc độ phù hợp timing gốc
     │
-    ├─→ Audio Mixing: Combine Vietnamese + background
+    ├─→ Trộn audio: Kết hợp giọng Việt + nhạc nền
     │
-    └─→ FFmpeg: Export final video
-        └─→ Original video + Vietnamese audio + optional subtitles
+    └─→ FFmpeg: Xuất video cuối cùng
+        └─→ Video gốc + audio tiếng Việt + phụ đề (tùy chọn)
 ```
 
 ## 🐳 Docker Services
 
-| Service | Port | Description |
-|---------|------|-------------|
-| `frontend` | 3000 | Next.js web interface |
-| `backend` | 8000 | FastAPI API server |
+| Service | Port | Mô tả |
+|---------|------|-------|
+| `frontend` | 3000 | Giao diện web Next.js |
+| `backend` | 8000 | API server FastAPI |
 | `worker` | - | Celery background processor |
 | `postgres` | 5432 | PostgreSQL database |
 | `redis` | 6379 | Redis cache/broker |
-| `minio` | 9000/9001 | S3-compatible file storage |
+| `minio` | 9000/9001 | S3-compatible storage |
 
-## 🛠️ Development
+## 🛠️ Phát triển
 
-### Project Structure
+### Cấu trúc project
 
 ```
 videodub/
@@ -248,7 +233,9 @@ videodub/
 │   ├── config.py             # Settings (Pydantic)
 │   ├── api/
 │   │   ├── routes.py         # REST endpoints
-│   │   └── websocket.py      # WebSocket handler
+│   │   ├── websocket.py      # WebSocket handler
+│   │   ├── auth.py           # JWT authentication
+│   │   └── analytics.py      # Dashboard analytics
 │   ├── services/
 │   │   ├── video.py          # Pipeline orchestrator
 │   │   ├── ffmpeg.py         # FFmpeg wrapper
@@ -257,7 +244,9 @@ videodub/
 │   │   ├── tts.py            # TTS providers
 │   │   ├── audio_mixer.py    # Audio mixing
 │   │   ├── subtitles.py      # Subtitle generation
-│   │   └── lipsync.py        # Lip-sync (optional)
+│   │   ├── cache.py          # Translation cache
+│   │   ├── lipsync.py        # Lip-sync (optional)
+│   │   └── storage.py        # S3/local storage
 │   ├── workers/
 │   │   ├── celery_app.py     # Celery config
 │   │   └── tasks.py          # Background tasks
@@ -266,70 +255,73 @@ videodub/
 │   └── utils/
 ├── frontend/
 │   ├── app/
-│   │   ├── page.tsx          # Upload page
+│   │   ├── page.tsx          # Trang upload
 │   │   ├── layout.tsx        # Root layout
-│   │   ├── globals.css       # Global styles
 │   │   └── jobs/
-│   │       ├── page.tsx      # Jobs list
+│   │       ├── page.tsx      # Danh sách jobs
 │   │       └── [jobId]/
-│   │           └── page.tsx  # Job progress
+│   │           └── page.tsx  # Tiến độ job
 │   ├── components/
-│   ├── lib/
-│   └── hooks/
+│   ├── hooks/
+│   └── lib/
+├── .agents/skills/           # Matt Pocock skills
+├── docs/adr/                 # Architecture Decision Records
+├── CLAUDE.md                 # Agent instructions
+├── CONTEXT.md                # Shared language
 ├── docker/
-│   ├── docker-compose.yml
-│   ├── Dockerfile.backend
-│   └── Dockerfile.frontend
-├── storage/                  # Temp processing files
+├── storage/
 ├── requirements.txt
 ├── .env.example
+├── run.bat                   # Script chạy 1 lệnh (Windows)
+├── run.sh                    # Script chạy 1 lệnh (Linux/Mac)
 └── README.md
 ```
 
-### Adding a New TTS Provider
+### Thêm TTS Provider mới
 
-1. Create a new class in `backend/services/tts.py`:
+1. Tạo class trong `backend/services/tts.py`:
 
 ```python
 class MyNewTTSProvider(BaseTTSProvider):
     async def synthesize(self, text: str, output_path: str, voice: str, speed: float) -> str:
-        # Implementation
+        # Triển khai
         return output_path
 
     def list_voices(self) -> list[dict]:
         return [{"id": "my_voice", "name": "My Voice", "provider": "my"}]
 ```
 
-2. Register in `PROVIDERS` dict:
+2. Đăng ký trong `PROVIDERS`:
 
 ```python
 PROVIDERS["my_tts"] = MyNewTTSProvider
 ```
 
-3. Set `TTS_PROVIDER=my_tts` in `.env`
+3. Set `TTS_PROVIDER=my_tts` trong `.env`
 
-### Adding a New Translation Provider
+### Thêm Translation Provider mới
 
-1. Add a method to `TranslationService` in `backend/services/translation.py`:
+1. Thêm method trong `TranslationService`:
 
 ```python
 async def _translate_my_provider(self, user_prompt: str) -> str:
-    # Implementation
+    # Triển khai
     return translated_text
 ```
 
-2. Add provider check in `translate_segment()`
+2. Thêm check trong `translate_segment()`
 
-3. Set `TRANSLATION_PROVIDER=my_provider` in `.env`
+3. Set `TRANSLATION_PROVIDER=my_provider` trong `.env`
 
 ## 📝 License
 
 MIT License
 
-## 🙏 Acknowledgments
+## 🙏 Cảm ơn
 
 - [pyVideoTrans](https://github.com/jianchang512/pyvideotrans) — Pipeline inspiration
 - [videoTranslator](https://github.com/Felixdiamond/videoTranslator) — Architecture reference
 - [WhisperX](https://github.com/m-bain/whisperx) — Speech recognition
 - [Edge TTS](https://github.com/rany2/edge-tts) — Free Vietnamese TTS
 - [Demucs](https://github.com/facebookresearch/demucs) — Vocal separation
+- [Matt Pocock Skills](https://github.com/mattpocock/skills) — Agent skills
