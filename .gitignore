@@ -1,0 +1,74 @@
+# Author: DUC LONG
+# Year: 2026
+# Project: VideoDubAI
+
+# ── Python ──────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+
+# ── Virtual Environment ─────────────────────────────
+venv/
+env/
+.venv/
+.env
+
+# ── Node.js ─────────────────────────────────────────
+node_modules/
+.next/
+out/
+
+# ── IDE ─────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ── OS ──────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Storage / Temp ──────────────────────────────────
+storage/uploads/*
+storage/audio/*
+storage/vocals/*
+storage/background/*
+storage/tts/*
+storage/output/*
+!storage/uploads/.gitkeep
+!storage/audio/.gitkeep
+!storage/vocals/.gitkeep
+!storage/background/.gitkeep
+!storage/tts/.gitkeep
+!storage/output/.gitkeep
+
+# ── Database ────────────────────────────────────────
+*.db
+*.sqlite3
+
+# ── Logs ────────────────────────────────────────────
+*.log
+logs/
+
+# ── Docker ──────────────────────────────────────────
+docker/volumes/
+
+# ── Temp files ──────────────────────────────────────
+/tmp/
+*.tmp
+*.bak
+
+# ── Build artifacts ─────────────────────────────────
+*.pyc
+*.pyo
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/

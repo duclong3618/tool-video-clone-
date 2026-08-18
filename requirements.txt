@@ -1,0 +1,42 @@
+# Author: DUC LONG
+# Year: 2026
+# Project: VideoDubAI
+
+# ── Core ──────────────────────────────────────────────
+fastapi==0.115.0
+uvicorn[standard]==0.32.0
+pydantic==2.9.0
+pydantic-settings==2.5.0
+python-multipart==0.0.12
+
+# ── Database ──────────────────────────────────────────
+sqlalchemy[asyncio]==2.0.35
+asyncpg==0.30.0
+alembic==1.13.0
+
+# ── Redis / Celery ───────────────────────────────────
+redis==5.1.0
+celery==5.4.0
+
+# ── HTTP client ───────────────────────────────────────
+httpx==0.27.0
+
+# ── AI / ML ───────────────────────────────────────────
+# WhisperX (primary transcription)
+# Install separately: pip install git+https://github.com/m-bain/whisperx.git
+# faster-whisper (fallback)
+faster-whisper==1.1.0
+
+# ── TTS ───────────────────────────────────────────────
+edge-tts==6.1.12
+
+# ── Audio processing ──────────────────────────────────
+# demucs (vocal separation) — install separately
+# pip install demucs
+
+# ── Subtitle processing ───────────────────────────────
+pysrt==1.1.2
+
+# ── Utilities ─────────────────────────────────────────
+python-dotenv==1.0.1
+loguru==0.7.2
